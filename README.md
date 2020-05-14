@@ -1,4 +1,7 @@
 # 07-vet
+[![Build Status](https://travis-ci.com/seqre/veterinaryclinic.svg?token=JmUSxPrpzx14kkoZrVNF&branch=master)](https://travis-ci.com/seqre/veterinaryclinic)
+
+## Specification
 Należy utworzyć serwis do rejestracji wizyt weterynarza.
 
 Serwis powinien zawierać (wymagania funkcjonalne): 
