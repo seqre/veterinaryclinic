@@ -6,6 +6,8 @@ import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -19,26 +21,30 @@ public class Client {
     private final int id;
 
     @JsonProperty("firstName")
-    @Column(nullable = false, length = 32)
-    @Size(min = 3, max = 32)
+    @Column(length = 64)
+    @Size(min = 3, max = 64)
+    @NotNull
     private final String firstName;
 
     @JsonProperty("lastName")
-    @Column(nullable = false, length = 64)
+    @Column(length = 64)
     @Size(min = 2, max = 64)
+    @NotNull
     private final String lastName;
 
     @JsonProperty("birthdate")
-    @Column(nullable = false)
+    @NotNull
+    @Past
     @Temporal(TemporalType.DATE)
     private final Date birthdate;
 
     @JsonProperty("gender")
-    @Column(nullable = false)
+    @NotNull
     @Enumerated(EnumType.STRING)
     private final Gender gender;
 
     @JsonProperty("address")
+    @NotNull
     private final Address address;
 
     //TODO: Require only one contact form (allow for both)
@@ -56,7 +62,7 @@ public class Client {
     private final List<Pet> pets;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Client(int id, @Size(min = 3, max = 32) String firstName, @Size(min = 2, max = 64) String lastName, Date birthdate, Gender gender, Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
+    public Client(int id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past Date birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
