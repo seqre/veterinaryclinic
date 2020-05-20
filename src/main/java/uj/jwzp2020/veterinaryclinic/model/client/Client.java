@@ -13,12 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity(name = "client")
+@SecondaryTable(name = "address", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 public class Client {
 
     @JsonProperty("id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
+    private final Long id;
 
     @JsonProperty("firstName")
     @Column(length = 64)
@@ -45,6 +46,7 @@ public class Client {
 
     @JsonProperty("address")
     @NotNull
+    @Embedded
     private final Address address;
 
     //TODO: Require only one contact form (allow for both)
@@ -62,7 +64,7 @@ public class Client {
     private final List<Pet> pets;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Client(int id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past Date birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
+    public Client(Long id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past Date birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,7 +76,7 @@ public class Client {
         this.pets = pets;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

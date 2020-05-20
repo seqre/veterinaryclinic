@@ -3,18 +3,16 @@ package uj.jwzp2020.veterinaryclinic.model.client;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-@Entity(name = "address")
+@Embeddable
+@Table(name = "address")
 public class Address {
-
-    @JsonProperty("id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
 
     @JsonProperty("street")
     @Column(length = 96)
@@ -47,18 +45,13 @@ public class Address {
     private final String country;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Address(int id, @Size(min = 3, max = 96) String street, @NotNull int parcelNumber, int flatNumber, @Size(min = 2, max = 64) @NotNull String city, @Size(min = 3, max = 8) @NotNull String zipcode, @Size(min = 4, max = 64) @NotNull String country) {
-        this.id = id;
+    public Address(@Size(min = 3, max = 96) String street, @NotNull int parcelNumber, int flatNumber, @Size(min = 2, max = 64) @NotNull String city, @Size(min = 3, max = 8) @NotNull String zipcode, @Size(min = 4, max = 64) @NotNull String country) {
         this.street = street;
         this.parcelNumber = parcelNumber;
         this.flatNumber = flatNumber;
         this.city = city;
         this.zipcode = zipcode;
         this.country = country;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getStreet() {
@@ -88,8 +81,7 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
-                ", street='" + street + '\'' +
+                "street='" + street + '\'' +
                 ", parcelNumber=" + parcelNumber +
                 ", flatNumber=" + flatNumber +
                 ", city='" + city + '\'' +
