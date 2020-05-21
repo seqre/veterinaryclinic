@@ -9,7 +9,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity(name = "client")
@@ -36,8 +37,7 @@ public class Client {
     @JsonProperty("birthdate")
     @NotNull
     @Past
-    @Temporal(TemporalType.DATE)
-    private final Date birthdate;
+    private final LocalDate birthdate;
 
     @JsonProperty("gender")
     @NotNull
@@ -60,11 +60,11 @@ public class Client {
 
     @JsonProperty("pets")
     @Column(insertable = false)
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     private final List<Pet> pets;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Client(Long id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past Date birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
+    public Client(Long id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past LocalDate birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,7 +73,7 @@ public class Client {
         this.address = address;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
-        this.pets = pets;
+        this.pets = new LinkedList<>();
     }
 
     public Long getId() {
@@ -88,7 +88,7 @@ public class Client {
         return lastName;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 

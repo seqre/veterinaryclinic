@@ -8,24 +8,25 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "appointment")
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
+    private final Long id;
 
     @JsonProperty("pet")
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
     private final Pet pet;
 
     @JsonProperty("date")
     @NotNull
     @Future
-    @Temporal(TemporalType.TIMESTAMP)
-    private final Date date;
+    private final LocalDateTime date;
 
     //TODO: implement parsing value using AppointmentLength.of()
     @JsonProperty("duration")
@@ -39,7 +40,7 @@ public class Appointment {
     private final String description;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Appointment(int id, @NotNull Pet pet, @NotNull @Future Date date, @NotNull AppointmentLength duration, @Size(max = 1536) String description) {
+    public Appointment(Long id, @NotNull Pet pet, @NotNull @Future LocalDateTime date, @NotNull AppointmentLength duration, @Size(max = 1536) String description) {
         this.id = id;
         this.pet = pet;
         this.date = date;
@@ -47,7 +48,7 @@ public class Appointment {
         this.description = description;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -55,7 +56,7 @@ public class Appointment {
         return pet;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
