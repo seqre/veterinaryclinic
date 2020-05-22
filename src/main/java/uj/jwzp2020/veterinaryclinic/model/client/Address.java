@@ -44,6 +44,15 @@ public class Address {
     @NotNull
     private final String country;
 
+    public Address() {
+        this.street = null;
+        this.parcelNumber = 0;
+        this.flatNumber = 0;
+        this.city = null;
+        this.zipcode = null;
+        this.country = null;
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Address(@Size(min = 3, max = 96) String street, @NotNull int parcelNumber, int flatNumber, @Size(min = 2, max = 64) @NotNull String city, @Size(min = 3, max = 8) @NotNull String zipcode, @Size(min = 4, max = 64) @NotNull String country) {
         this.street = street;

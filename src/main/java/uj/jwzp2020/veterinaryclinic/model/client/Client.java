@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity(name = "client")
@@ -20,7 +19,7 @@ public class Client {
     @JsonProperty("id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final int id;
 
     @JsonProperty("firstName")
     @Column(length = 64)
@@ -63,8 +62,20 @@ public class Client {
     @OneToMany(mappedBy = "owner")
     private final List<Pet> pets;
 
+    public Client() {
+        this.id = 0;
+        this.firstName = null;
+        this.lastName = null;
+        this.birthdate = null;
+        this.gender = null;
+        this.address = null;
+        this.email = null;
+        this.telephoneNumber = null;
+        this.pets = null;
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Client(Long id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past LocalDate birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber) {
+    public Client(int id, @Size(min = 3, max = 64) @NotNull String firstName, @Size(min = 2, max = 64) @NotNull String lastName, @NotNull @Past LocalDate birthdate, @NotNull Gender gender, @NotNull Address address, @Email String email, String telephoneNumber, List<Pet> pets) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,10 +84,10 @@ public class Client {
         this.address = address;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
-        this.pets = new LinkedList<>();
+        this.pets = List.copyOf(pets);
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

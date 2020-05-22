@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity(name = "pet")
@@ -18,7 +17,7 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final int id;
 
     @JsonProperty("name")
     @Column(length = 64)
@@ -52,18 +51,28 @@ public class Pet {
     @OneToMany(mappedBy = "pet")
     private final List<Appointment> appointments;
 
+    public Pet() {
+        this.id = 0;
+        this.name = null;
+        this.owner = null;
+        this.species = null;
+        this.birthdate = null;
+        this.deathdate = null;
+        this.appointments = null;
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Pet(Long id, @Size(min = 2, max = 64) @NotNull String name, @NotNull Client owner, @NotNull Species species, @NotNull @PastOrPresent LocalDate birthdate, @PastOrPresent LocalDate deathdate) {
+    public Pet(int id, @Size(min = 2, max = 64) @NotNull String name, @NotNull Client owner, @NotNull Species species, @NotNull @PastOrPresent LocalDate birthdate, @PastOrPresent LocalDate deathdate, List<Appointment> appointments) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.species = species;
         this.birthdate = birthdate;
         this.deathdate = deathdate;
-        this.appointments = new LinkedList<>();
+        this.appointments = List.copyOf(appointments);
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

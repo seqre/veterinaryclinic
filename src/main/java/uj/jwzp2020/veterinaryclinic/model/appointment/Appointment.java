@@ -15,7 +15,7 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final int id;
 
     @JsonProperty("pet")
     @NotNull
@@ -39,8 +39,16 @@ public class Appointment {
     @Size(max = 1536)
     private final String description;
 
+    public Appointment() {
+        this.id = 0;
+        this.pet = null;
+        this.date = null;
+        this.duration = null;
+        this.description = null;
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Appointment(Long id, @NotNull Pet pet, @NotNull @Future LocalDateTime date, @NotNull AppointmentLength duration, @Size(max = 1536) String description) {
+    public Appointment(int id, @NotNull Pet pet, @NotNull @Future LocalDateTime date, @NotNull AppointmentLength duration, @Size(max = 1536) String description) {
         this.id = id;
         this.pet = pet;
         this.date = date;
@@ -48,7 +56,7 @@ public class Appointment {
         this.description = description;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
