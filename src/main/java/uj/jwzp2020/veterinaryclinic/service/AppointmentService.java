@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
 import uj.jwzp2020.veterinaryclinic.repository.AppointmentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +33,19 @@ public class AppointmentService {
     }
 
     public Appointment save(Appointment appointment) {
+        LocalDateTime start = appointment.getDate();
+        LocalDateTime end = appointment.getDate().plusMinutes(appointment.getDuration().getMinutes());
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+        long colliding = appointments.stream()
+                .filter(app -> app.getDate().plusMinutes(app.getDuration().getMinutes()).isAfter(start))
+                .filter(app -> app.getDate().isBefore(end))
+                .count();
+
+        if (colliding > 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment time cannot overlap other ones");
+        }
+
         return appointmentRepository.save(appointment);
     }
 }
