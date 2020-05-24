@@ -2,7 +2,6 @@ package uj.jwzp2020.veterinaryclinic.model.appointment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -16,13 +15,11 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @JsonProperty("pet")
+    @JsonProperty("petId")
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    private Long petId;
 
     @JsonProperty("date")
     @NotNull

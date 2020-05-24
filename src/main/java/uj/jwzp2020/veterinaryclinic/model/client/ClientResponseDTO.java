@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 import uj.jwzp2020.veterinaryclinic.model.serializer.LocalDateToStringSerializer;
 
 import javax.validation.constraints.Email;
@@ -12,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -54,8 +52,4 @@ public class ClientResponseDTO {
     //TODO: Add validation
     @JsonProperty("telephoneNumber")
     private String telephoneNumber;
-
-    @JsonProperty("pets")
-    @NotNull
-    private List<Pet> pets;
 }

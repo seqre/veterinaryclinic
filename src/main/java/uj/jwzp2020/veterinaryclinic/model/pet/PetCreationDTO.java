@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import uj.jwzp2020.veterinaryclinic.model.client.Client;
 import uj.jwzp2020.veterinaryclinic.model.serializer.StringToLocalDateDeserializer;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +13,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
 public class PetCreationDTO {
 
     @JsonProperty("name")
@@ -23,9 +20,9 @@ public class PetCreationDTO {
     @NotNull
     private String name;
 
-    @JsonProperty("owner")
+    @JsonProperty("ownerId")
     @NotNull
-    private Client owner;
+    private Long ownerId;
 
     @JsonProperty("species")
     @NotNull

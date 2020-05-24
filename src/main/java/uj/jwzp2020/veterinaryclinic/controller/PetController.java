@@ -48,17 +48,8 @@ public class PetController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public PetResponseDTO createPet(@RequestBody PetCreationDTO dto) {
-        System.out.println(dto.toString());
-
         Pet pet = modelMapper.map(dto, Pet.class);
-
-        System.out.println(pet.toString());
-
-        pet.setOwner(clientService.getClientById(pet.getOwner().getId()));
         pet = petService.save(pet);
-
-        System.out.println(pet.toString());
-
         return modelMapper.map(pet, PetResponseDTO.class);
     }
 

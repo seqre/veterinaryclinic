@@ -1,19 +1,15 @@
 package uj.jwzp2020.veterinaryclinic.model.pet;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
-import uj.jwzp2020.veterinaryclinic.model.client.Client;
 import uj.jwzp2020.veterinaryclinic.model.serializer.LocalDateToStringSerializer;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,10 +23,9 @@ public class PetResponseDTO {
     @NotNull
     private String name;
 
-    @JsonProperty("owner")
+    @JsonProperty("ownerId")
     @NotNull
-    @JsonIdentityReference(alwaysAsId = true)
-    private Client owner;
+    private Long ownerId;
 
     @JsonProperty("species")
     @NotNull
@@ -47,8 +42,4 @@ public class PetResponseDTO {
     @PastOrPresent
     @JsonSerialize(using = LocalDateToStringSerializer.class)
     private LocalDate deathdate;
-
-    @JsonProperty("appointments")
-    @NotNull
-    private List<Appointment> appointments;
 }

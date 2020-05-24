@@ -1,12 +1,9 @@
 package uj.jwzp2020.veterinaryclinic.model.client;
 
 import lombok.Data;
-import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity(name = "client")
@@ -37,8 +34,4 @@ public class Client {
     private String email;
 
     private String telephoneNumber;
-
-    @Column(insertable = false)
-    @OneToMany(mappedBy = "owner")
-    private List<Pet> pets = new ArrayList<>();
 }
