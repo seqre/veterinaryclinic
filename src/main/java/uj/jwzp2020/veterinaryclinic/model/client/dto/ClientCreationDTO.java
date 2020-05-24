@@ -1,10 +1,10 @@
 package uj.jwzp2020.veterinaryclinic.model.client.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import uj.jwzp2020.veterinaryclinic.model.serializer.deserializer.StringToLocalDateDeserializer;
 
 import javax.validation.constraints.Email;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientCreationDTO {
 
     @JsonProperty("firstName")

@@ -1,5 +1,6 @@
 package uj.jwzp2020.veterinaryclinic.model.appointment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AppointmentCreationDTO {
 
     @JsonProperty("petId")
@@ -25,7 +27,6 @@ public class AppointmentCreationDTO {
     @JsonDeserialize(using = StringToLocalDateTimeDeserializer.class)
     private LocalDateTime date;
 
-    //TODO: implement parsing value using AppointmentLength.of()
     @JsonProperty("duration")
     @NotNull
     @JsonDeserialize(using = StringToAppointmentLengthDTODeserializer.class)

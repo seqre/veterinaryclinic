@@ -29,7 +29,6 @@ public class AppointmentResponseDTO {
     @JsonSerialize(using = LocalDateTimeToStringSerializer.class)
     private LocalDateTime date;
 
-    //TODO: implement parsing value using AppointmentLength.of()
     @JsonProperty("duration")
     @NotNull
     @JsonSerialize(using = AppointmentLengthDTOToStringSerializer.class)

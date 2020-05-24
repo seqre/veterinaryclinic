@@ -1,5 +1,6 @@
 package uj.jwzp2020.veterinaryclinic.model.pet.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PetCreationDTO {
 
     @JsonProperty("name")

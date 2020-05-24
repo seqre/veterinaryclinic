@@ -19,7 +19,6 @@ public class Appointment {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    //TODO: implement parsing value using AppointmentLength.of()
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AppointmentLength duration;
