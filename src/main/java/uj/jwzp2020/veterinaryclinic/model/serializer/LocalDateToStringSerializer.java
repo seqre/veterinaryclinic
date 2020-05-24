@@ -13,6 +13,6 @@ public class LocalDateToStringSerializer extends JsonSerializer<LocalDate> {
 
     @Override
     public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeObject(value.format(formatter));
+        if (value != null) gen.writeObject(value.format(formatter));
     }
 }
