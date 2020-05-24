@@ -4,7 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import uj.jwzp2020.veterinaryclinic.model.client.Client;
+import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
+import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetChangeOwnerDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetCreationDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetResponseDTO;
 import uj.jwzp2020.veterinaryclinic.service.ClientService;
@@ -44,6 +47,24 @@ public class PetController {
         return modelMapper.map(pet, PetResponseDTO.class);
     }
 
+    @GetMapping("/{id}/owner")
+    @ResponseBody
+    public ClientResponseDTO getPetOwnerByPetId(@PathVariable("id") Long id) {
+        Pet pet = petService.getPetById(id);
+        Client client = clientService.getClientById(pet.getOwnerId());
+        return modelMapper.map(client, ClientResponseDTO.class);
+    }
+
+    @PatchMapping("/{id}/owner")
+    @ResponseBody
+    public PetResponseDTO changePetOwnerByPetId(@PathVariable("id") Long id, @RequestBody PetChangeOwnerDTO dto) {
+        Pet pet = petService.getPetById(id);
+        clientService.getClientById(dto.getOwnerId());
+        pet.setOwnerId(dto.getOwnerId());
+        pet = petService.save(pet);
+        return modelMapper.map(pet, PetResponseDTO.class);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -53,14 +74,12 @@ public class PetController {
         return modelMapper.map(pet, PetResponseDTO.class);
     }
 
-    @PostMapping("/multiple-add")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public List<PetResponseDTO> createPets(@RequestBody List<PetCreationDTO> dtos) {
-        return dtos.stream()
-                .map(dto -> modelMapper.map(dto, Pet.class))
-                .map(petService::save)
-                .map(pet -> modelMapper.map(pet, PetResponseDTO.class))
-                .collect(Collectors.toList());
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public List<PetResponseDTO> createPets(@RequestBody List<PetCreationDTO> dtos) {
+//        return dtos.stream()
+//                .map(this::createPet)
+//                .collect(Collectors.toList());
+//    }
 }

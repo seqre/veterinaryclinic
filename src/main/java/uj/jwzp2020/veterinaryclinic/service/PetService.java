@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
+import uj.jwzp2020.veterinaryclinic.repository.ClientRepository;
 import uj.jwzp2020.veterinaryclinic.repository.PetRepository;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public class PetService {
 
     private final RestTemplate restTemplate;
     private final PetRepository petRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public PetService(RestTemplate restTemplate, PetRepository petRepository) {
+    public PetService(RestTemplate restTemplate, PetRepository petRepository, ClientRepository clientRepository) {
         this.restTemplate = restTemplate;
         this.petRepository = petRepository;
+        this.clientRepository = clientRepository;
     }
 
     public List<Pet> getPets() {
@@ -32,6 +35,8 @@ public class PetService {
     }
 
     public Pet save(Pet pet) {
+        clientRepository.findById(pet.getOwnerId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown owner with id " + pet.getOwnerId()));
         return petRepository.save(pet);
     }
 }
