@@ -19,12 +19,12 @@ public class ClientCreationDTO {
 
     @JsonProperty("firstName")
     @Size(min = 3, max = 64)
-    @NotNull
+    @NotBlank
     private String firstName;
 
     @JsonProperty("lastName")
     @Size(min = 2, max = 64)
-    @NotNull
+    @NotBlank
     private String lastName;
 
     @JsonProperty("birthdate")

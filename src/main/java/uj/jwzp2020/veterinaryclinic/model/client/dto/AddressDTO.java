@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,17 +26,17 @@ public class AddressDTO {
 
     @JsonProperty("city")
     @Size(min = 2, max = 64)
-    @NotNull
+    @NotBlank
     private String city;
 
     @JsonProperty("zipcode")
     @Size(min = 3, max = 8)
-    @NotNull
+    @NotBlank
     private String zipcode;
 
     @JsonProperty("country")
     @Size(min = 4, max = 64)
-    @NotNull
+    @NotBlank
     private String country;
 
 }
