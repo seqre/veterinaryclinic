@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
-import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentChangeDescriptionDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentStatus;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentChangeDataDTO;
 import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentCreationDTO;
 import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentResponseDTO;
 import uj.jwzp2020.veterinaryclinic.service.AppointmentService;
@@ -41,8 +42,16 @@ public class AppointmentController {
 
     @GetMapping
     @ResponseBody
-    public List<AppointmentResponseDTO> getAppointments() {
+    public List<AppointmentResponseDTO> getAppointments(@RequestParam(required = false, defaultValue = "") String day) {
         List<Appointment> appointments = appointmentService.getAppointments();
+
+        if (!day.equals("")) {
+            LocalDate date = LocalDate.parse(day);
+            appointments = appointments.stream()
+                    .filter(app -> app.getDate().toLocalDate().isEqual(date))
+                    .collect(Collectors.toList());
+        }
+
         return appointments.stream()
                 .map(appointment -> modelMapper.map(appointment, AppointmentResponseDTO.class))
                 .collect(Collectors.toList());
@@ -57,9 +66,12 @@ public class AppointmentController {
 
     @PatchMapping("/{id}")
     @ResponseBody
-    public AppointmentResponseDTO changeAppointmentDescriptionById(@PathVariable("id") Long id, @RequestBody AppointmentChangeDescriptionDTO dto) {
+    public AppointmentResponseDTO changeAppointmentDataById(@PathVariable("id") Long id, @RequestBody AppointmentChangeDataDTO dto) {
         Appointment appointment = appointmentService.getAppointmentById(id);
-        appointment.setDescription(dto.getDescription());
+
+        if (dto.getDescription() != null) appointment.setDescription(dto.getDescription());
+        if (dto.getStatus() != null) appointment.setStatus(modelMapper.map(dto.getStatus(), AppointmentStatus.class));
+
         appointment = appointmentService.save(appointment);
         return modelMapper.map(appointment, AppointmentResponseDTO.class);
     }

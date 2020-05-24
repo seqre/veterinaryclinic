@@ -50,14 +50,12 @@ public class ClientController {
         return modelMapper.map(client, ClientResponseDTO.class);
     }
 
-    @PostMapping("/multiple-add")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public List<ClientResponseDTO> createClients(@RequestBody List<ClientCreationDTO> dtos) {
-        return dtos.stream()
-                .map(dto -> modelMapper.map(dto, Client.class))
-                .map(clientService::save)
-                .map(client -> modelMapper.map(client, ClientResponseDTO.class))
-                .collect(Collectors.toList());
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public List<ClientResponseDTO> createClients(@RequestBody List<ClientCreationDTO> dtos) {
+//        return dtos.stream()
+//                .map(this::createClient)
+//                .collect(Collectors.toList());
+//    }
 }
