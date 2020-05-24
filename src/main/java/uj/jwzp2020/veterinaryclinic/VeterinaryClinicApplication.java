@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
+import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentCreationDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.client.Client;
 import uj.jwzp2020.veterinaryclinic.model.client.ClientCreationDTO;
 import uj.jwzp2020.veterinaryclinic.model.client.ClientResponseDTO;
@@ -43,6 +46,7 @@ public class VeterinaryClinicApplication {
             mapping.map(Client::getGender, ClientResponseDTO::setGenderDTO);
             mapping.map(Client::getAddress, ClientResponseDTO::setAddressDTO);
         });
+        // END CLIENT
 
         // PET
         TypeMap<PetCreationDTO, Pet> creationToPet = mapper.createTypeMap(PetCreationDTO.class, Pet.class);
@@ -54,6 +58,21 @@ public class VeterinaryClinicApplication {
         petToResponse.addMappings(mapping -> {
             mapping.map(Pet::getSpecies, PetResponseDTO::setSpecies);
         });
+        // END PET
+
+        // APPOINTMENT
+        TypeMap<AppointmentCreationDTO, Appointment> creationToAppointment = mapper.createTypeMap(AppointmentCreationDTO.class, Appointment.class);
+        creationToAppointment.addMappings(mapping -> {
+            mapping.map(AppointmentCreationDTO::getDuration, Appointment::setDuration);
+            mapping.map(AppointmentCreationDTO::getStatus, Appointment::setStatus);
+        });
+
+        TypeMap<Appointment, AppointmentResponseDTO> appointmentToResponse = mapper.createTypeMap(Appointment.class, AppointmentResponseDTO.class);
+        appointmentToResponse.addMappings(mapping -> {
+            mapping.map(Appointment::getDuration, AppointmentResponseDTO::setDuration);
+            mapping.map(Appointment::getStatus, AppointmentResponseDTO::setStatus);
+        });
+        // END APPOINTMENT
 
         return mapper;
     }
