@@ -6,15 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 import uj.jwzp2020.veterinaryclinic.model.serializer.deserializer.StringToLocalDateDeserializer;
+import uj.jwzp2020.veterinaryclinic.model.validation.Contact;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Contact
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientCreationDTO {
 
@@ -42,12 +41,11 @@ public class ClientCreationDTO {
     @NotNull
     private AddressDTO addressDTO;
 
-    //TODO: Require only one contact form (allow for both)
     @JsonProperty("email")
     @Email
     private String email;
 
-    //TODO: Add validation
     @JsonProperty("telephoneNumber")
+    @Pattern(regexp = "[0-9]{9}")
     private String telephoneNumber;
 }
