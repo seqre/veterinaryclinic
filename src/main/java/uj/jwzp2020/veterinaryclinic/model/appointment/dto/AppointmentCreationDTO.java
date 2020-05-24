@@ -1,11 +1,11 @@
-package uj.jwzp2020.veterinaryclinic.model.appointment;
+package uj.jwzp2020.veterinaryclinic.model.appointment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
-import uj.jwzp2020.veterinaryclinic.model.serializer.StringToAppointmentLengthDTODeserializer;
-import uj.jwzp2020.veterinaryclinic.model.serializer.StringToLocalDateTimeDeserializer;
+import uj.jwzp2020.veterinaryclinic.model.serializer.deserializer.StringToAppointmentLengthDTODeserializer;
+import uj.jwzp2020.veterinaryclinic.model.serializer.deserializer.StringToLocalDateTimeDeserializer;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;

@@ -1,11 +1,10 @@
-package uj.jwzp2020.veterinaryclinic.model.client;
+package uj.jwzp2020.veterinaryclinic.model.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import uj.jwzp2020.veterinaryclinic.model.serializer.StringToLocalDateDeserializer;
+import uj.jwzp2020.veterinaryclinic.model.serializer.serializer.LocalDateToStringSerializer;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -15,8 +14,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ToString
-public class ClientCreationDTO {
+public class ClientResponseDTO {
+
+    @JsonProperty("id")
+    @NotNull
+    private Long id;
 
     @JsonProperty("firstName")
     @Size(min = 3, max = 64)
@@ -31,7 +33,7 @@ public class ClientCreationDTO {
     @JsonProperty("birthdate")
     @NotNull
     @Past
-    @JsonDeserialize(using = StringToLocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateToStringSerializer.class)
     private LocalDate birthdate;
 
     @JsonProperty("gender")

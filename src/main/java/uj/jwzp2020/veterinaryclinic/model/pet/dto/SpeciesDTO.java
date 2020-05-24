@@ -1,4 +1,4 @@
-package uj.jwzp2020.veterinaryclinic.model.pet;
+package uj.jwzp2020.veterinaryclinic.model.pet.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

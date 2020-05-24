@@ -1,4 +1,4 @@
-package uj.jwzp2020.veterinaryclinic.model.serializer;
+package uj.jwzp2020.veterinaryclinic.model.serializer.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

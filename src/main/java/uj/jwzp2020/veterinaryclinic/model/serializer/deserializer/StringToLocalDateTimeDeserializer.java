@@ -1,4 +1,4 @@
-package uj.jwzp2020.veterinaryclinic.model.serializer;
+package uj.jwzp2020.veterinaryclinic.model.serializer.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

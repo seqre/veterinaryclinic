@@ -1,10 +1,10 @@
-package uj.jwzp2020.veterinaryclinic.model.serializer;
+package uj.jwzp2020.veterinaryclinic.model.serializer.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentLengthDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentLengthDTO;
 
 import java.io.IOException;
 

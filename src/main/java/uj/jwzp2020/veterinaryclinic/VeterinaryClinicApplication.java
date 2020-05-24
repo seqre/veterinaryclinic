@@ -9,14 +9,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
-import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentCreationDTO;
-import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentResponseDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentCreationDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.client.Client;
-import uj.jwzp2020.veterinaryclinic.model.client.ClientCreationDTO;
-import uj.jwzp2020.veterinaryclinic.model.client.ClientResponseDTO;
+import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientCreationDTO;
+import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
-import uj.jwzp2020.veterinaryclinic.model.pet.PetCreationDTO;
-import uj.jwzp2020.veterinaryclinic.model.pet.PetResponseDTO;
+import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetCreationDTO;
+import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetResponseDTO;
 
 @SpringBootApplication
 public class VeterinaryClinicApplication {

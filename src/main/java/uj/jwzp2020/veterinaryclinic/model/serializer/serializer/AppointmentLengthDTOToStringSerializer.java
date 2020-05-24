@@ -1,9 +1,9 @@
-package uj.jwzp2020.veterinaryclinic.model.serializer;
+package uj.jwzp2020.veterinaryclinic.model.serializer.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import uj.jwzp2020.veterinaryclinic.model.appointment.AppointmentLengthDTO;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentLengthDTO;
 
 import java.io.IOException;
 

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uj.jwzp2020.veterinaryclinic.model.client.Client;
-import uj.jwzp2020.veterinaryclinic.model.client.ClientCreationDTO;
-import uj.jwzp2020.veterinaryclinic.model.client.ClientResponseDTO;
+import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientCreationDTO;
+import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientResponseDTO;
 import uj.jwzp2020.veterinaryclinic.service.ClientService;
 
 import java.util.List;

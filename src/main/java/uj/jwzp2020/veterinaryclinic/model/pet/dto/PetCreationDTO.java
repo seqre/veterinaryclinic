@@ -1,10 +1,10 @@
-package uj.jwzp2020.veterinaryclinic.model.pet;
+package uj.jwzp2020.veterinaryclinic.model.pet.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
-import uj.jwzp2020.veterinaryclinic.model.serializer.LocalDateToStringSerializer;
+import uj.jwzp2020.veterinaryclinic.model.serializer.deserializer.StringToLocalDateDeserializer;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -13,10 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class PetResponseDTO {
-
-    @JsonProperty("id")
-    private Long id;
+public class PetCreationDTO {
 
     @JsonProperty("name")
     @Size(min = 2, max = 64)
@@ -35,11 +32,6 @@ public class PetResponseDTO {
     @JsonProperty("birthdate")
     @NotNull
     @PastOrPresent
-    @JsonSerialize(using = LocalDateToStringSerializer.class)
+    @JsonDeserialize(using = StringToLocalDateDeserializer.class)
     private LocalDate birthdate;
-
-    @JsonProperty("deathdate")
-    @PastOrPresent
-    @JsonSerialize(using = LocalDateToStringSerializer.class)
-    private LocalDate deathdate;
 }

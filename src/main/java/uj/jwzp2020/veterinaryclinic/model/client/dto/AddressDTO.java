@@ -1,4 +1,4 @@
-package uj.jwzp2020.veterinaryclinic.model.client;
+package uj.jwzp2020.veterinaryclinic.model.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
