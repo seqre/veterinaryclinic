@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
+import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentChangeDescriptionDTO;
 import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentCreationDTO;
 import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentResponseDTO;
 import uj.jwzp2020.veterinaryclinic.service.AppointmentService;
@@ -54,20 +55,40 @@ public class AppointmentController {
         return modelMapper.map(appointment, AppointmentResponseDTO.class);
     }
 
+    @PatchMapping("/{id}")
+    @ResponseBody
+    public AppointmentResponseDTO changeAppointmentDescriptionById(@PathVariable("id") Long id, @RequestBody AppointmentChangeDescriptionDTO dto) {
+        Appointment appointment = appointmentService.getAppointmentById(id);
+        appointment.setDescription(dto.getDescription());
+        appointment = appointmentService.save(appointment);
+        return modelMapper.map(appointment, AppointmentResponseDTO.class);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public AppointmentResponseDTO createAppointment(@RequestBody AppointmentCreationDTO dto) {
         Appointment appointment = modelMapper.map(dto, Appointment.class);
 
-        LocalDateTime dateTime = appointment.getDate();
+        LocalDateTime start = appointment.getDate();
+        LocalDateTime end = appointment.getDate().plusMinutes(appointment.getDuration().getMinutes());
 
-        if (!dateTime.toLocalDate().isAfter(LocalDate.now().plusDays(1))) {
+        if (!start.toLocalDate().isAfter(LocalDate.now().plusDays(1))) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Visits may be arranged from the following day onwards");
         }
 
-        if (dateTime.toLocalTime().isBefore(START) && dateTime.toLocalTime().plusMinutes(appointment.getDuration().getMinutes()).isAfter(END)) {
+        if (start.toLocalTime().isBefore(START) && start.toLocalTime().plusMinutes(appointment.getDuration().getMinutes()).isAfter(END)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The visit must take place between 8:00 and 20:00");
+        }
+
+        List<Appointment> appointments = appointmentService.getAppointments();
+        long colliding = appointments.stream()
+                .filter(app -> app.getDate().plusMinutes(app.getDuration().getMinutes()).isAfter(start))
+                .filter(app -> app.getDate().isBefore(end))
+                .count();
+
+        if (colliding > 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment time cannot overlap other ones");
         }
 
         appointment = appointmentService.save(appointment);

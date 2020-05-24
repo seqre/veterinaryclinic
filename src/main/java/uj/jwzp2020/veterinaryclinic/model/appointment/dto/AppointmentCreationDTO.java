@@ -35,4 +35,6 @@ public class AppointmentCreationDTO {
     @JsonProperty("status")
     @NotNull
     private AppointmentStatusDTO status;
+
+    private String description = "";
 }

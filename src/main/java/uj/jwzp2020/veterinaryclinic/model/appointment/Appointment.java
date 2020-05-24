@@ -28,5 +28,5 @@ public class Appointment {
     private AppointmentStatus status;
 
     @Column(insertable = false, length = 1536)
-    private String description = "";
+    private String description;
 }
