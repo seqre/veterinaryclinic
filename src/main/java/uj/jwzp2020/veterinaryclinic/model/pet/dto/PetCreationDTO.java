@@ -31,7 +31,6 @@ public class PetCreationDTO {
     @NotNull
     private SpeciesDTO species;
 
-    //TODO: Make sure it works for only year/year&month/...
     @JsonProperty("birthdate")
     @NotNull
     @PastOrPresent

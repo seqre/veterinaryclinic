@@ -24,7 +24,6 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private Species species;
 
-    //TODO: Make sure it works for only year/year&month/...
     @Column(nullable = false)
     @PastOrPresent
     private LocalDate birthdate;
