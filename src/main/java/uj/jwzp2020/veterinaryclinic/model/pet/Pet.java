@@ -1,114 +1,33 @@
 package uj.jwzp2020.veterinaryclinic.model.pet;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import uj.jwzp2020.veterinaryclinic.model.appointment.Appointment;
-import uj.jwzp2020.veterinaryclinic.model.client.Client;
+import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 
+@Data
 @Entity(name = "pet")
 public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final int id;
+    private Long id;
 
-    @JsonProperty("name")
     @Column(length = 64)
-    @Size(min = 2, max = 64)
-    @NotNull
-    private final String name;
+    private String name;
 
-    @JsonProperty("owner")
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private final Client owner;
+    @Column(nullable = false)
+    private Long ownerId;
 
-    @JsonProperty("species")
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Species species;
+    private Species species;
 
-    //TODO: Make sure it works for only year/year&month/...
-    @JsonProperty("birthdate")
-    @NotNull
+    @Column(nullable = false)
     @PastOrPresent
-    private final LocalDate birthdate;
+    private LocalDate birthdate;
 
-    @JsonProperty("deathdate")
     @PastOrPresent
-    private final LocalDate deathdate;
-
-    @JsonProperty("appointments")
-    @Column(insertable = false)
-    @OneToMany(mappedBy = "pet")
-    private final List<Appointment> appointments;
-
-    public Pet() {
-        this.id = 0;
-        this.name = null;
-        this.owner = null;
-        this.species = null;
-        this.birthdate = null;
-        this.deathdate = null;
-        this.appointments = null;
-    }
-
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Pet(int id, @Size(min = 2, max = 64) @NotNull String name, @NotNull Client owner, @NotNull Species species, @NotNull @PastOrPresent LocalDate birthdate, @PastOrPresent LocalDate deathdate, List<Appointment> appointments) {
-        this.id = id;
-        this.name = name;
-        this.owner = owner;
-        this.species = species;
-        this.birthdate = birthdate;
-        this.deathdate = deathdate;
-        this.appointments = List.copyOf(appointments);
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Client getOwner() {
-        return owner;
-    }
-
-    public Species getSpecies() {
-        return species;
-    }
-
-    public LocalDate getBirthdate() {
-        return birthdate;
-    }
-
-    public LocalDate getDeathdate() {
-        return deathdate;
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    @Override
-    public String toString() {
-        return "Pet{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", owner=" + owner +
-                ", species=" + species +
-                ", birthdate=" + birthdate +
-                ", deathdate=" + deathdate +
-                '}';
-    }
+    private LocalDate deathdate;
 }
