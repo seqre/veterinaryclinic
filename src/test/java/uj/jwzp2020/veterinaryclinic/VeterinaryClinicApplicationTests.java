@@ -9,5 +9,4 @@ class VeterinaryClinicApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
