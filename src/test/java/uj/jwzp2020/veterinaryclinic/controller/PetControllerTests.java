@@ -22,6 +22,8 @@ import uj.jwzp2020.veterinaryclinic.model.client.dto.ClientResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.client.dto.GenderDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 import uj.jwzp2020.veterinaryclinic.model.pet.Species;
+import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetChangeOwnerDTO;
+import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetCreationDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetResponseDTO;
 import uj.jwzp2020.veterinaryclinic.model.pet.dto.SpeciesDTO;
 import uj.jwzp2020.veterinaryclinic.service.ClientService;
@@ -32,8 +34,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PetControllerTests {
@@ -193,15 +196,14 @@ public class PetControllerTests {
             assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
         }
 
-        // TODO: fix me
         @Test
         public void returnsOnExistentId() throws Exception {
             given(petService.getPetById(1L)).willReturn(a);
-            given(clientService.getClientById(1L)).willReturn(aClient);
+            given(clientService.getClientById(anyLong())).willReturn(aClient);
             given(modelMapper.map(aClient, ClientResponseDTO.class)).willReturn(aClientResponseDTO);
 
             MockHttpServletResponse response = mockMvc.perform(
-                    get("/pets/1")
+                    get("/pets/1/owner")
                             .accept(MediaType.APPLICATION_JSON))
                     .andReturn()
                     .getResponse();
@@ -210,5 +212,113 @@ public class PetControllerTests {
             assertThat(response.getContentAsString()).contains("1", "a", "male", "e");
         }
 
+    }
+
+    @Nested
+    class ChangePetOwnerByPetId {
+
+        private final String changeOwnerData = "{\n" +
+                "    \"ownerId\": 2\n" +
+                "}";
+        private final PetChangeOwnerDTO dto = new PetChangeOwnerDTO(2L);
+
+        @Test
+        public void throwsExceptionOnNonExistentPet() throws Exception {
+            given(petService.getPetById(1L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    patch("/pets/1/owner")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(changeOwnerData)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        }
+
+        @Test
+        public void throwsExceptionOnNonExistentOwner() throws Exception {
+            given(petService.getPetById(1L)).willReturn(a);
+            given(clientService.getClientById(dto.getOwnerId())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    patch("/pets/1/owner")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(changeOwnerData)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        }
+
+        @Test
+        public void willNotChangeForProvidedNullValues() throws Exception {
+            given(petService.getPetById(1L)).willReturn(a);
+            given(petService.save(a)).willReturn(a);
+            given(modelMapper.map(a, PetResponseDTO.class)).willReturn(aResponseDTO);
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    patch("/pets/1/owner")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(changeOwnerData)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+            assertThat(response.getContentAsString()).contains("1", "a", "dog");
+        }
+
+
+        @Test
+        public void willChangeOwner() throws Exception {
+            final Pet c = new Pet(1L, "a", 2L, Species.DOG, LocalDate.of(2020, 2, 1), null);
+            final PetResponseDTO cResponseDTO = new PetResponseDTO(1L, "a", 2L, SpeciesDTO.DOG, LocalDate.of(2020, 2, 2), null);
+
+            given(petService.getPetById(1L)).willReturn(a);
+            given(petService.save(any(Pet.class))).will(obj -> obj.getArgument(0));
+            given(modelMapper.map(any(Pet.class), eq(PetResponseDTO.class))).willReturn(cResponseDTO);
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    patch("/pets/1/owner")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(changeOwnerData)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+            assertThat(response.getContentAsString()).contains("1", "a", "dog", "2");
+        }
+    }
+
+    @Nested
+    class CreatePet {
+        private final String creationString = "{\n" +
+                "    \"name\": \"Kiara\",\n" +
+                "    \"ownerId\": 1,\n" +
+                "    \"species\": \"dog\",\n" +
+                "    \"birthdate\": \"2005-01-02\"\n" +
+                "}";
+
+        @Test
+        public void successfulPetCreation() throws Exception {
+            given(modelMapper.map(any(PetCreationDTO.class), eq(Pet.class))).willReturn(a);
+            given(petService.save(any(Pet.class))).will(obj -> obj.getArgument(0));
+            given(modelMapper.map(any(Pet.class), eq(PetResponseDTO.class))).willReturn(aResponseDTO);
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    post("/pets")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(creationString)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+            assertThat(response.getContentAsString()).contains("1", "a", "dog");
+        }
     }
 }

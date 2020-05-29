@@ -112,6 +112,7 @@ public class PetServiceTest {
         }
 
 
+        // TODO: fix this
         @Test
         public void returnsOnExistentId() {
             given(clientRepository.findById(a.getOwnerId())).willReturn(Optional.of(aClient));
