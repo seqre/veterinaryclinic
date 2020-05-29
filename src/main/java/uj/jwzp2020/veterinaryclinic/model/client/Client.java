@@ -1,11 +1,13 @@
 package uj.jwzp2020.veterinaryclinic.model.client;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "client")
 @SecondaryTable(name = "address", pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 public class Client {
