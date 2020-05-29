@@ -3,7 +3,6 @@ package uj.jwzp2020.veterinaryclinic.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 import uj.jwzp2020.veterinaryclinic.repository.ClientRepository;
@@ -14,13 +13,11 @@ import java.util.List;
 @Service
 public class PetService {
 
-    private final RestTemplate restTemplate;
     private final PetRepository petRepository;
     private final ClientRepository clientRepository;
 
     @Autowired
-    public PetService(RestTemplate restTemplate, PetRepository petRepository, ClientRepository clientRepository) {
-        this.restTemplate = restTemplate;
+    public PetService(PetRepository petRepository, ClientRepository clientRepository) {
         this.petRepository = petRepository;
         this.clientRepository = clientRepository;
     }
