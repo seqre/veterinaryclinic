@@ -193,6 +193,7 @@ public class PetControllerTests {
             assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
         }
 
+        // TODO: fix me
         @Test
         public void returnsOnExistentId() throws Exception {
             given(petService.getPetById(1L)).willReturn(a);
