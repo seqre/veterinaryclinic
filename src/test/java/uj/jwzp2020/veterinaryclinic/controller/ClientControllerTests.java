@@ -162,10 +162,17 @@ public class ClientControllerTests {
     @Nested
     class CreateClient {
 
-        private String creationString = "{\n" +
+        private final Client aProperDate = new Client(1L, "a", "a", LocalDate.of(YEAR, MONTH, DAY), Gender.MALE, address, "e", null);
+        private final ClientResponseDTO aProperDateDTO = new ClientResponseDTO(1L, "a", "a", LocalDate.of(YEAR, MONTH, DAY), GenderDTO.MALE, addressDTO, "e", null);
+        private final Client aDateWithoutDay = new Client(1L, "a", "a", LocalDate.of(YEAR, MONTH, 1), Gender.MALE, address, "e", null);
+        private final ClientResponseDTO aDateWithoutDayDTO = new ClientResponseDTO(1L, "a", "a", LocalDate.of(YEAR, MONTH, 1), GenderDTO.MALE, addressDTO, "e", null);
+        private final Client aDateOnlyYear = new Client(1L, "a", "a", LocalDate.of(YEAR, 1, 1), Gender.MALE, address, "e", null);
+        private final ClientResponseDTO aDateOnlyYearDTO = new ClientResponseDTO(1L, "a", "a", LocalDate.of(YEAR, 1, 1), GenderDTO.MALE, addressDTO, "e", null);
+
+        private String creationStringTemplate = "{\n" +
                 "    \"firstName\": \"a\",\n" +
                 "    \"lastName\": \"a\",\n" +
-                "    \"birthdate\": \"1953-04-23\",\n" +
+                "    \"birthdate\": \"%s\",\n" +
                 "    \"gender\": \"male\",\n" +
                 "    \"address\": {\n" +
                 "        \"street\": \"Kwiatkowa\",\n" +
@@ -179,22 +186,59 @@ public class ClientControllerTests {
                 "    \"telephoneNumber\": \"123456789\"\n" +
                 "}";
 
+
         @Test
-        public void successfulClientCreation() throws Exception {
-            given(modelMapper.map(any(ClientCreationDTO.class), eq(Client.class))).willReturn(a);
+        public void successfulClientCreationWithProperDate() throws Exception {
+            given(modelMapper.map(any(ClientCreationDTO.class), eq(Client.class))).willReturn(aProperDate);
             given(clientService.save(any(Client.class))).will(obj -> obj.getArgument(0));
-            given(modelMapper.map(any(Client.class), eq(ClientResponseDTO.class))).willReturn(aResponseDTO);
+            given(modelMapper.map(any(Client.class), eq(ClientResponseDTO.class))).willReturn(aProperDateDTO);
 
             MockHttpServletResponse response = mockMvc.perform(
                     post("/clients")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(creationString)
+                            .content(String.format(creationStringTemplate, "2020-06-05"))
                             .accept(MediaType.APPLICATION_JSON))
                     .andReturn()
                     .getResponse();
 
             assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-            assertThat(response.getContentAsString()).contains("1", "a", "male", "e");
+            assertThat(response.getContentAsString()).contains("1", "a", "male", "e", "2020-06-05");
+        }
+
+        @Test
+        public void successfulClientCreationWithoutDay() throws Exception {
+            given(modelMapper.map(any(ClientCreationDTO.class), eq(Client.class))).willReturn(aDateWithoutDay);
+            given(clientService.save(any(Client.class))).will(obj -> obj.getArgument(0));
+            given(modelMapper.map(any(Client.class), eq(ClientResponseDTO.class))).willReturn(aDateWithoutDayDTO);
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    post("/clients")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(String.format(creationStringTemplate, "2020-06"))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+            assertThat(response.getContentAsString()).contains("1", "a", "male", "e", "2020-06-01");
+        }
+
+        @Test
+        public void successfulClientCreationOnlyYear() throws Exception {
+            given(modelMapper.map(any(ClientCreationDTO.class), eq(Client.class))).willReturn(aDateOnlyYear);
+            given(clientService.save(any(Client.class))).will(obj -> obj.getArgument(0));
+            given(modelMapper.map(any(Client.class), eq(ClientResponseDTO.class))).willReturn(aDateOnlyYearDTO);
+
+            MockHttpServletResponse response = mockMvc.perform(
+                    post("/clients")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(String.format(creationStringTemplate, "2020"))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .getResponse();
+
+            assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+            assertThat(response.getContentAsString()).contains("1", "a", "male", "e", "2020-01-01");
         }
 
     }
