@@ -1,5 +1,6 @@
 package uj.jwzp2020.veterinaryclinic.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import uj.jwzp2020.veterinaryclinic.service.ClientService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -28,6 +30,7 @@ public class ClientController {
     @GetMapping
     @ResponseBody
     public List<ClientResponseDTO> getClients() {
+        log.info("Got request for clients");
         List<Client> clients = clientService.getClients();
         return clients.stream()
                 .map(client -> modelMapper.map(client, ClientResponseDTO.class))
@@ -37,6 +40,7 @@ public class ClientController {
     @GetMapping("/{id}")
     @ResponseBody
     public ClientResponseDTO getClientById(@PathVariable("id") Long id) {
+        log.info("Got request for client with id " + id);
         Client client = clientService.getClientById(id);
         return modelMapper.map(client, ClientResponseDTO.class);
     }
@@ -45,6 +49,7 @@ public class ClientController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ClientResponseDTO createClient(@RequestBody ClientCreationDTO dto) {
+        log.info("Got request for creating client");
         Client client = modelMapper.map(dto, Client.class);
         client = clientService.save(client);
         return modelMapper.map(client, ClientResponseDTO.class);

@@ -1,5 +1,6 @@
 package uj.jwzp2020.veterinaryclinic.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/pets")
 public class PetController {
@@ -35,6 +37,7 @@ public class PetController {
     @GetMapping
     @ResponseBody
     public List<PetResponseDTO> getPets() {
+        log.info("Got request for pets");
         List<Pet> pets = petService.getPets();
         return pets.stream()
                 .map(pet -> modelMapper.map(pet, PetResponseDTO.class))
@@ -44,6 +47,7 @@ public class PetController {
     @GetMapping("/{id}")
     @ResponseBody
     public PetResponseDTO getPetById(@PathVariable("id") Long id) {
+        log.info("Got request for pet with id " + id);
         Pet pet = petService.getPetById(id);
         return modelMapper.map(pet, PetResponseDTO.class);
     }
@@ -51,6 +55,7 @@ public class PetController {
     @GetMapping("/{id}/owner")
     @ResponseBody
     public ClientResponseDTO getPetOwnerByPetId(@PathVariable("id") Long id) {
+        log.info("Got request for owner of pet with id " + id);
         Pet pet = petService.getPetById(id);
         Client client = clientService.getClientById(pet.getOwnerId());
         return modelMapper.map(client, ClientResponseDTO.class);
@@ -60,6 +65,7 @@ public class PetController {
     @ResponseBody
     @Transactional
     public PetResponseDTO changePetOwnerByPetId(@PathVariable("id") Long id, @RequestBody PetChangeOwnerDTO dto) {
+        log.info("Got request for changing owner of pet with id " + id);
         Pet pet = petService.getPetById(id);
         clientService.getClientById(dto.getOwnerId());
         pet.setOwnerId(dto.getOwnerId());
@@ -71,17 +77,9 @@ public class PetController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public PetResponseDTO createPet(@RequestBody PetCreationDTO dto) {
+        log.info("Got request for creating new pet");
         Pet pet = modelMapper.map(dto, Pet.class);
         pet = petService.save(pet);
         return modelMapper.map(pet, PetResponseDTO.class);
     }
-
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public List<PetResponseDTO> createPets(@RequestBody List<PetCreationDTO> dtos) {
-//        return dtos.stream()
-//                .map(this::createPet)
-//                .collect(Collectors.toList());
-//    }
 }

@@ -1,5 +1,6 @@
 package uj.jwzp2020.veterinaryclinic.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentController {
@@ -40,6 +42,7 @@ public class AppointmentController {
     @GetMapping
     @ResponseBody
     public List<AppointmentResponseDTO> getAppointments(@RequestParam(required = false, defaultValue = "") String day) {
+        log.info("Got request for all appointments" + (!day.equals("") ? " for day " + day : ""));
         List<Appointment> appointments = appointmentService.getAppointments();
 
         if (!day.equals("")) {
@@ -62,6 +65,7 @@ public class AppointmentController {
     @GetMapping("/{id}")
     @ResponseBody
     public AppointmentResponseDTO getAppointmentById(@PathVariable("id") Long id) {
+        log.info("Got request for appointment with id " + id);
         Appointment appointment = appointmentService.getAppointmentById(id);
         return modelMapper.map(appointment, AppointmentResponseDTO.class);
     }
@@ -69,6 +73,7 @@ public class AppointmentController {
     @PatchMapping("/{id}")
     @ResponseBody
     public AppointmentResponseDTO changeAppointmentDataById(@PathVariable("id") Long id, @RequestBody AppointmentChangeDataDTO dto) {
+        log.info("Got request for changing appointment data with id " + id);
         Appointment appointment = appointmentService.getAppointmentById(id);
 
         appointmentService.changeData(appointment, dto);
@@ -81,6 +86,7 @@ public class AppointmentController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public AppointmentResponseDTO createAppointment(@RequestBody AppointmentCreationDTO dto) {
+        log.info("Got request for creating new appointment");
         Appointment appointment = modelMapper.map(dto, Appointment.class);
 
         LocalDateTime start = appointment.getDate();
