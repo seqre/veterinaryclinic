@@ -11,6 +11,7 @@ import uj.jwzp2020.veterinaryclinic.model.appointment.dto.AppointmentChangeDataD
 import uj.jwzp2020.veterinaryclinic.repository.AppointmentRepository;
 import uj.jwzp2020.veterinaryclinic.repository.PetRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown appointment with id " + id));
     }
 
+    @Transactional
     public Appointment save(Appointment appointment) {
         petRepository.findById(appointment.getPetId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown pet with id " + appointment.getPetId()));
@@ -44,6 +46,7 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    @Transactional
     public Appointment changeData(Appointment appointment, AppointmentChangeDataDTO dto) {
         if (dto.getDescription() != null) appointment.setDescription(dto.getDescription());
         if (dto.getStatus() != null) appointment.setStatus(modelMapper.map(dto.getStatus(), AppointmentStatus.class));

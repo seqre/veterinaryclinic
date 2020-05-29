@@ -8,6 +8,7 @@ import uj.jwzp2020.veterinaryclinic.model.pet.Pet;
 import uj.jwzp2020.veterinaryclinic.repository.ClientRepository;
 import uj.jwzp2020.veterinaryclinic.repository.PetRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -31,6 +32,7 @@ public class PetService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown pet with id " + id));
     }
 
+    @Transactional
     public Pet save(Pet pet) {
         clientRepository.findById(pet.getOwnerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown owner with id " + pet.getOwnerId()));

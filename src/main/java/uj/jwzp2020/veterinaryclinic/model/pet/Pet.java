@@ -2,6 +2,7 @@ package uj.jwzp2020.veterinaryclinic.model.pet;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "pet")
 public class Pet {
 

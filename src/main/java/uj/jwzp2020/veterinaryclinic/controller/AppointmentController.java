@@ -102,13 +102,4 @@ public class AppointmentController {
         appointment = appointmentService.save(appointment);
         return modelMapper.map(appointment, AppointmentResponseDTO.class);
     }
-
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public List<AppointmentResponseDTO> createAppointments(@RequestBody List<AppointmentCreationDTO> dtos) {
-//        return dtos.stream()
-//                .map(this::createAppointment)
-//                .collect(Collectors.toList());
-//    }
 }

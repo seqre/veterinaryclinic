@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uj.jwzp2020.veterinaryclinic.model.client.Client;
 import uj.jwzp2020.veterinaryclinic.repository.ClientRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -28,6 +29,7 @@ public class ClientService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unknown client with id " + id));
     }
 
+    @Transactional
     public Client save(Client client) {
         return clientRepository.save(client);
     }

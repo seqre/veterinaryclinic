@@ -49,13 +49,4 @@ public class ClientController {
         client = clientService.save(client);
         return modelMapper.map(client, ClientResponseDTO.class);
     }
-
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public List<ClientResponseDTO> createClients(@RequestBody List<ClientCreationDTO> dtos) {
-//        return dtos.stream()
-//                .map(this::createClient)
-//                .collect(Collectors.toList());
-//    }
 }

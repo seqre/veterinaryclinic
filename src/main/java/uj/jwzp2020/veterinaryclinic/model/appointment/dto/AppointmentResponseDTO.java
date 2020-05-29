@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uj.jwzp2020.veterinaryclinic.model.serializer.serializer.AppointmentLengthDTOToStringSerializer;
 import uj.jwzp2020.veterinaryclinic.model.serializer.serializer.LocalDateTimeToStringSerializer;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AppointmentResponseDTO {
 
     @JsonProperty("id")

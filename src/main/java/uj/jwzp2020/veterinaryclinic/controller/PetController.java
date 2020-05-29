@@ -13,6 +13,7 @@ import uj.jwzp2020.veterinaryclinic.model.pet.dto.PetResponseDTO;
 import uj.jwzp2020.veterinaryclinic.service.ClientService;
 import uj.jwzp2020.veterinaryclinic.service.PetService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +58,7 @@ public class PetController {
 
     @PatchMapping("/{id}/owner")
     @ResponseBody
+    @Transactional
     public PetResponseDTO changePetOwnerByPetId(@PathVariable("id") Long id, @RequestBody PetChangeOwnerDTO dto) {
         Pet pet = petService.getPetById(id);
         clientService.getClientById(dto.getOwnerId());
