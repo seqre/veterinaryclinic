@@ -2,6 +2,7 @@ package uj.jwzp2020.veterinaryclinic.model.appointment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import uj.jwzp2020.veterinaryclinic.model.serializer.serializer.AppointmentLengthDTOToStringSerializer;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class AppointmentResponseDTO {
 
     @JsonProperty("id")

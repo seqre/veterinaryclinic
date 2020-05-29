@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppointmentChangeDataDTO {
 

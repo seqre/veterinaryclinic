@@ -1,11 +1,13 @@
 package uj.jwzp2020.veterinaryclinic.model.appointment;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "appointment")
 public class Appointment {
 
